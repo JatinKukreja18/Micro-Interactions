@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Ibarra+Real+Nova:400,700|Lato:300,400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <title>Micro Interactions</title>
+</head>
+<body>
+   
+
+    <div class="section soft">
+        <h1 class="heading">Apply Button Interaction</h1>
+        <button class="btn btn-primary save-btn" onclick="applyClicked(this)">
+            <span class="text">Apply</span> 
+            <svg class="icon hidden" height="20px" viewBox="-16 0 512 512" width="20px" xmlns="http://www.w3.org/2000/svg"  fill="currentColor">
+                <path class="save-page" d="m83.789062 90h66.210938v-66.210938zm0 0"/>
+                <path class="save-page" d="m75 421h330v-421h-225v120h-105zm165-331h90v30h-90zm-120 60h240v30h-240zm0 60h240v30h-240zm0 60h240v30h-240zm0 61h90v30h-90zm0 0"/>
+                <path d="m0 361h45v60h-45zm0 0"/>
+                <path d="m435 361h45v60h-45zm0 0"/>
+                <path d="m0 451h480v61h-480zm0 0"/>
+            </svg>
+            <svg id="Capa_1" class="icon saved" enable-background="new 0 0 515.556 515.556" height="14px" viewBox="0 0 515.556 515.556" width="14px" xmlns="http://www.w3.org/2000/svg">
+                <path d="m0 274.226 176.549 176.886 339.007-338.672-48.67-47.997-290.337 290-128.553-128.552z"/>
+            </svg>
+        </button>
+        <button class="btn btn-secondary" onclick="activateButton(this)">
+            Cancel
+        </button>
+    </div>
+    <div class="section soft">
+        <h1 class="heading">Login Interaction</h1>
+        <form class="mi-form" id="loginForm">
+            <label class="mi-input-wrapper" for="username">
+                <input type="text" class="mi-input" id="username" autocomplete="off" required onkeyup="validateForm('#loginForm')">
+                <span class="placeholder">Username</span>
+            </label>
+            <label class="mi-input-wrapper">
+                <input type="password" class="mi-input" id="password" autocomplete="off" required onkeyup="validateForm('#loginForm')" minlength="6">
+                <span class="placeholder">Password</span>
+            </label>
+            <button class="btn btn-primary btn-login" onclick="event.preventDefault();login()" >
+                <span>    Login</span>
+                <svg id="Capa_1" class="icon logged-in" enable-background="new 0 0 515.556 515.556" height="18px" viewBox="0 0 515.556 515.556" width="18px" xmlns="http://www.w3.org/2000/svg">
+                    <path d="m0 274.226 176.549 176.886 339.007-338.672-48.67-47.997-290.337 290-128.553-128.552z"/>
+                </svg>
+            </button>
+        </form>
+    </div>
+
+
+    <script>
+        function validateForm(id){
+            const allInputs = document.querySelectorAll(id + ' .mi-input');
+            let isFormValid = true;
+            allInputs.forEach(el => {
+                if(!el.checkValidity()){
+                    isFormValid = false;
+                }
+            });
+            // if(isFormValid){
+            //     document.querySelector('.btn-login').disabled = false;
+            // }else{
+            //     document.querySelector('.btn-login').disabled = true;
+            // }
+        }
+        function login(){
+            
+            // document.querySelector('#loginForm').classList.remove('invalid')
+            document.querySelector('.btn-login').classList.add('validating')
+            if(document.querySelector('#password').value.length == 0){
+                    document.querySelector('.btn-login').classList.remove('validating');
+                    document.querySelector('#loginForm').classList.add('invalid')
+            }
+            setTimeout(() => {
+                if(document.querySelector('#password').value && document.querySelector('#password').value == 'correct'){
+                    document.querySelector('.btn-login').classList.remove('validating');
+                    document.querySelector('.btn-login').classList.add('valid');
+                    document.querySelector('#loginForm').classList.add('valid')
+                    setTimeout(() => {
+                            document.querySelector('.btn-login').classList.remove('valid');
+                            document.querySelector('#loginForm').classList.remove('valid')
+                            document.querySelector('#loginForm').reset();
+                    }, 1500);
+                }else{
+                    document.querySelector('.btn-login').classList.remove('validating');
+                    document.querySelector('#loginForm').classList.add('invalid')
+                    setTimeout(() => {
+                            document.querySelector('#loginForm').classList.remove('invalid')
+                    }, 1500);
+                }
+            }, 2000);
+        }
+        // save button function
+        function applyClicked(el){
+            el.querySelector('.text').classList.toggle('hidden')
+            el.querySelector('.icon').classList.toggle('hidden')
+            setTimeout(() => {  
+                el.classList.add('saving');                
+            }, 100);
+            setTimeout(() => {  
+                el.querySelector('.icon').classList.toggle('hidden')
+                el.classList.remove('saving');                
+                el.classList.add('saved');                
+            },2000);
+            setTimeout(() => {  
+                el.classList.remove('saved');                
+                el.querySelector('.text').classList.toggle('hidden')
+            },3000);
+        }
+    </script>
+
+</body>
+</html>
